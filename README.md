@@ -1,2 +1,2 @@
-# avl-tree
+# AVL Tree
 AVL tree implementation in C
