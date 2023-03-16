@@ -23,6 +23,53 @@ void avlPrint(node_t *root);
 int comparator(const void *a, const void *b);
 
 int main(int argc, char const *argv[]) {
+    avl_tree_t tree;
+    data_t     data;
+
+    avl_init(&tree, sizeof(data_t));
+
+    data.number    = -1;
+    data.character = 'a';
+    avl_insert(&tree, &data, comparator);
+
+    srand(time(NULL));
+
+    for (int i = 0; i < 20; i++) {
+        data.number    = (rand() % (MAX_RAND - MIN_RAND)) + MIN_RAND;
+        data.character = (rand() % (MAX_ASCII - MIN_ASCII)) + MIN_ASCII;
+        avl_insert(&tree, &data, comparator);
+    }
+
+    data.number    = 33;
+    data.character = 'X';
+    avl_insert(&tree, &data, comparator);
+
+    for (int i = 0; i < 20; i++) {
+        data.number    = (rand() % (MAX_RAND - MIN_RAND)) + MIN_RAND;
+        data.character = (rand() % (MAX_ASCII - MIN_ASCII)) + MIN_ASCII;
+        avl_insert(&tree, &data, comparator);
+    }
+
+    /*for (int i = 0; i < 3; i++) {
+        data.number    = i + 1;
+        data.character = 65 + i;
+        tree.root = avl_insert(&tree, &data, comparator);
+    }*/
+
+    printf("\nLength: %ld\n", tree.length);
+    printf("Tree view\n");
+    avlPrint(tree.root);
+    printf("\n");
+
+    printf("Inorder\n");
+    inorderTraversal(tree.root);
+    printf("\n\nPreorder\n");
+    preorderTraversal(tree.root);
+    printf("\n\nPostorder\n");
+    postorderTraversal(tree.root);
+    printf("\n");
+
+    avl_destroy(&tree);
     return 0;
 }
 
