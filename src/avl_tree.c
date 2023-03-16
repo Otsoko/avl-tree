@@ -145,3 +145,62 @@ node_t *avl_insert_traversal(avl_tree_t *tree, node_t *node, void *data, int (*a
 
     return node;
 }
+
+node_t *avl_delete(avl_tree_t *tree, void *data, int (*avl_cmp_fptr)(const void *a, const void *b)) {
+    tree->root = avl_delete_traversal(tree, tree->root, data, avl_cmp_fptr);
+    return tree->root;
+}
+
+node_t *avl_delete_traversal(avl_tree_t *tree, node_t *node, void *data, int (*avl_cmp_fptr)(const void *a, const void *b)) {
+    if (node == NULL) {
+        return node;
+    }
+
+    if (avl_cmp_fptr(data, node->data) < 0) {
+        node->left = avl_delete_traversal(tree, node->left, data, avl_cmp_fptr);
+    } else if (avl_cmp_fptr(data, node->data) > 0) {
+        node->right = avl_delete_traversal(tree, node->right, data, avl_cmp_fptr);
+    } else {
+        
+        if (node->left == NULL) {
+            node_t *temp = node->right;
+            free(node->data);
+            free(node);
+            tree->length--;
+            return temp;
+        } else if (node->right == NULL) {
+            node_t *temp = node->left;
+            free(node->data);
+            free(node);
+            tree->length--;
+            return temp;
+        }
+
+        node_t *temp = avl_inorder_successor(node->right);
+        memcpy(node->data, temp->data, sizeof(data));
+        node->right = avl_delete_traversal(tree, node->right, temp->data, avl_cmp_fptr);
+    }
+
+    (node)->height = 1 + max(avl_height((node)->left), avl_height((node)->right));
+    int balance    = avl_get_balance_factor(node);
+
+    if (balance > 1 && avl_cmp_fptr(data, (node)->left->data) < 0) {
+        (node)->left = avl_rotate_left((node)->left);
+        return avl_rotate_right(node);
+    }
+
+    if (balance < -1 && avl_cmp_fptr(data, (node)->right->data) > 0) {
+        (node)->right = avl_rotate_right((node)->right);
+        return avl_rotate_left(node);
+    }
+
+    if (balance > 1 && avl_cmp_fptr(data, (node)->left->data) >= 0) {
+        return avl_rotate_right(node);
+    }
+
+    if (balance < -1 && avl_cmp_fptr(data, (node)->right->data) <= 0) {
+        return avl_rotate_left(node);
+    }
+
+    return node;
+}

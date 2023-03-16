@@ -27,5 +27,7 @@ node_t *avl_rotate_right(node_t *y);
 node_t *avl_rotate_left(node_t *x);
 node_t *avl_insert(avl_tree_t *tree, void *data, int (*avl_cmp_fptr)(const void *a, const void *b));
 node_t *avl_insert_traversal(avl_tree_t *tree, node_t *node, void *data, int (*avl_cmp_fptr)(const void *a, const void *b));
+node_t *avl_delete(avl_tree_t *tree, void *data, int (*avl_cmp_fptr)(const void *a, const void *b));
+node_t *avl_delete_traversal(avl_tree_t *tree, node_t *node, void *data, int (*avl_cmp_fptr)(const void *a, const void *b));
 
 #endif // __AVL_TREE__
