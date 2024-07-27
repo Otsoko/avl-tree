@@ -22,7 +22,7 @@ void avlPrint(node_t *root);
 
 int comparator(const void *a, const void *b);
 
-int main(int argc, char const *argv[]) {
+int main(void) {
     avl_tree_t tree;
     data_t     data;
 
